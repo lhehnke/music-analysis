@@ -14,7 +14,7 @@ The script covers
 
 using STARSET albums.
 
-Example plot (bigrams):
+Example plot (bigram network):
 
 <p align="center"><img src="https://raw.githubusercontent.com/lhehnke/lhehnke.github.io/master/img/starset-lyrics/Starplot_Transmissions.png" width="600px" height="640x" vspace="40px"/></p>
 
