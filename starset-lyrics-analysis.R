@@ -228,7 +228,7 @@ starset_bigram_tm <- starset_bigram_counts %>% filter(album == "Transmissions")
 starset_bigram_tm_split <- colsplit(starset_bigram_tm$bigram," ", c("word1", "word2"))
 starset_bigram_tm <- cbind(starset_bigram_tm_split, starset_bigram_tm[, "n"])
 
-starset_bigram_vs <- starset_bigram_counts %>% filter(album == "Transmissions")
+starset_bigram_vs <- starset_bigram_counts %>% filter(album == "Vessels")
 starset_bigram_vs_split <- colsplit(starset_bigram_vs$bigram," ", c("word1", "word2"))
 starset_bigram_vs <- cbind(starset_bigram_vs_split, starset_bigram_vs[, "n"])
 
