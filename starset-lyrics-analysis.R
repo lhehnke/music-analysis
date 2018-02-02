@@ -62,7 +62,12 @@ starset_tidy <- starset %>%
 
 # Set theme for visualizations
 viz_theme <- theme(
-  strip.background = element_rect(colour = "grey20", fill = "#92a1a9"),  # #8798a4
+  strip.background = element_rect(colour = "grey20", fill = "#92a1a9"),
+  axis.line = element_line(colour = "grey20"),
+  panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.border = element_blank(),
+  panel.background = element_blank(),
   strip.text = element_text(size = rel(1), face = "bold"),
   plot.caption = element_text(colour = "#4e5975"),
   text = element_text(family = "Avenir"))
