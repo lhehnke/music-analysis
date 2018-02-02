@@ -115,7 +115,7 @@ starset_tidy %>%
   xlab("") + ylab("") + ggtitle("Most common words on STARSET albums", subtitle = " ") +
   ylim(0, 60) + coord_flip() + viz_theme
 
-ggsave("plot1_.png", width = 12, height = 8, units = "in", dpi = 100)
+ggsave("plot1.png", width = 12, height = 8, units = "in", dpi = 100)
 
 
 #--------------------#
