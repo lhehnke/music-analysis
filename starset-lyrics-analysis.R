@@ -86,30 +86,34 @@ starset_cols <- c("#363241", "#3b2d2d", "#483845", "#4d3b4b", "#332f3e", "#2a2a2
 #-------------------#
 
 # Plot most common words
-starset_tidy %>%
+starset_tidy %>%  
   group_by(album) %>%
   count(word, sort = TRUE) %>%
   filter(n > 10) %>%
+  top_n(10, n) %>%
+  ungroup() %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n)) +
-  geom_col(fill = starset_cols[1:24]) +
+  geom_col(fill = starset_cols[1:17]) +
   facet_wrap( ~ album, scales = "free_y", ncol = 2) +
   theme(text = element_text(size = 20, color = "#1f232e")) + 
   xlab("") + ylab("") + ggtitle("Most common words on STARSET albums", subtitle = " ") +
   ylim(0, 60) + coord_flip() + viz_theme
 
 # Most common words (lollipop chart)
-starset_tidy %>%
+starset_tidy %>%  
   group_by(album) %>%
   count(word, sort = TRUE) %>%
   filter(n > 10) %>%
+  top_n(10, n) %>%
+  ungroup() %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n)) +
   geom_segment(aes(x = word, 
                    xend = word, 
                    y = 0, 
                    yend = n), col = "grey50") +
-  geom_point(col = starset_cols[1:24], size = 4) +  
+  geom_point(col = starset_cols[1:17], size = 4) +  
   facet_wrap( ~ album, scales = "free_y", ncol = 2) +
   theme(text = element_text(size = 20, color = "#1f232e")) + 
   xlab("") + ylab("") + ggtitle("Most common words on STARSET albums", subtitle = " ") +
@@ -159,6 +163,7 @@ starset_bing_top <- starset_bing %>%
 # Plot most common positive and negative words: Transmissions
 starset_bing_top %>%
   filter(album == "Transmissions")  %>%
+  mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n, fill = sentiment)) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~sentiment, scales = "free_y") +
@@ -173,7 +178,8 @@ ggsave("plot3.png", width = 12, height = 8, units = "in", dpi = 100)
 # Plot most common positive and negative words: Vessels
 starset_bing_top %>%
   filter(album == "Vessels")  %>%
-    ggplot(aes(word, n, fill = sentiment)) +
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
     geom_col(show.legend = FALSE) +
     facet_wrap(~sentiment, scales = "free_y") +
     scale_fill_manual(values = starset_cols[c(14, 4)]) +
@@ -202,7 +208,8 @@ starset_bigram_counts <- starset_bigrams %>%
 starset_bigram_counts %>%
   group_by(album) %>%
   filter(n > 10) %>%
-  mutate(word = reorder(bigram, n)) %>%
+  ungroup() %>%
+  mutate(bigram = reorder(bigram, n)) %>%
   ggplot(aes(bigram, n)) +
   geom_col(fill = starset_cols[1:27]) +
   facet_wrap(~album, scales = "free_y") +
@@ -214,10 +221,11 @@ starset_bigram_counts %>%
 starset_bigram_counts %>%
   group_by(album) %>%
   filter(n > 10) %>%
-  mutate(word = reorder(bigram, n)) %>%
+  ungroup() %>%
+  mutate(bigram = reorder(bigram, n)) %>%
   ggplot(aes(bigram, n)) +
-  geom_segment(aes(x = word, 
-                   xend = word, 
+  geom_segment(aes(x = bigram, 
+                   xend = bigram, 
                    y = 0, 
                    yend = n), col = "grey50") +
   geom_point(col = starset_cols[1:27], size = 4) +  
@@ -295,7 +303,7 @@ gg_circle_from_position <- function(data, rsize = NA,
 
 ## Transmissions 
 p <- ggraph(starset_bigram_tm_graph, layout = "fr") +
-  annotation_custom(milky_way, xmin = -25, xmax = 25, ymin = -25, ymax = 25) +  
+  annotation_custom(milky_way, xmin = -30, xmax = 30, ymin = -30, ymax = 30) +  
   geom_edge_link(aes(edge_alpha = n*2), colour = "#fafdff") +
   geom_node_point(color = "#fafdff", aes(size = degree(starset_bigram_tm_graph)*8)) +
   geom_node_text(aes(label = name), color = "white", size = 5, check_overlap = TRUE, repel = TRUE,
@@ -311,12 +319,12 @@ p <- ggraph(starset_bigram_tm_graph, layout = "fr") +
 p.positions <- layer_data(p, i = 2L)
 
 p + 
-  gg_circle_from_position(data = p.positions, rsize = 1.18, color = "#fafdff", lty = 1, size = 0.4) +
-  gg_circle_from_position(data = p.positions, rsize = 1.19, color = "#fafdff", lty = "3313", size = 0.4) +
-  gg_circle_from_position(data = p.positions, rsize = 1.20, color = "#fafdff", lty = 1, size = 0.4) +
-  annotate("text", x = 10.5, y = -3.51, hjust = 0, size = 8, 
+  gg_circle_from_position(data = p.positions, rsize = 1.23, color = "#fafdff", lty = 1, size = 0.4) +
+  gg_circle_from_position(data = p.positions, rsize = 1.24, color = "#fafdff", lty = "3313", size = 0.4) +
+  gg_circle_from_position(data = p.positions, rsize = 1.25, color = "#fafdff", lty = 1, size = 0.4) +
+  annotate("text", x = 14, y = -4, hjust = 0, size = 8, 
            label = paste("STARSET"), color = "white", alpha = 0.8) +
-  annotate("text", x = 10.5, y = -4.51, hjust = 0, size = 6, 
+  annotate("text", x = 14, y = -5, hjust = 0, size = 6, 
            label = paste("Transmissions"), color = "white", alpha = 0.6) +
   coord_equal()
 
@@ -341,12 +349,12 @@ p <- ggraph(starset_bigram_vs_graph, layout = "fr") +
 p.positions <- layer_data(p, i = 2L)
 
 p + 
-  gg_circle_from_position(data = p.positions, rsize = 1.18, color = "#fafdff", lty = 1, size = 0.4) +
-  gg_circle_from_position(data = p.positions, rsize = 1.19, color = "#fafdff", lty = "3313", size = 0.4) +
-  gg_circle_from_position(data = p.positions, rsize = 1.20, color = "#fafdff", lty = 1, size = 0.4) +
-  annotate("text", x = 14, y = -3, hjust = 0, size = 8, 
+  gg_circle_from_position(data = p.positions, rsize = 1.23, color = "#fafdff", lty = 1, size = 0.4) +
+  gg_circle_from_position(data = p.positions, rsize = 1.24, color = "#fafdff", lty = "3313", size = 0.4) +
+  gg_circle_from_position(data = p.positions, rsize = 1.25, color = "#fafdff", lty = 1, size = 0.4) +
+  annotate("text", x = 10, y = -9, hjust = 0, size = 8, 
            label = paste("STARSET"), color = "white", alpha = 0.8) +
-  annotate("text", x = 14, y = -4, hjust = 0, size = 6, 
+  annotate("text", x = 10, y = -10, hjust = 0, size = 6, 
            label = paste("Vessels"), color = "white", alpha = 0.6) +
   coord_equal()
 
