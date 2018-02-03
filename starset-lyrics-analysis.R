@@ -94,7 +94,7 @@ starset_tidy %>%
   ungroup() %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n)) +
-  geom_col(fill = starset_cols[1:17]) +
+  geom_col(fill = starset_cols[1:17], alpha = 0.9) +
   facet_wrap( ~ album, scales = "free_y", ncol = 2) +
   theme(text = element_text(size = 20, color = "#1f232e")) + 
   xlab("") + ylab("") + ggtitle("Most common words on STARSET albums", subtitle = " ") +
@@ -112,8 +112,8 @@ starset_tidy %>%
   geom_segment(aes(x = word, 
                    xend = word, 
                    y = 0, 
-                   yend = n), col = "grey50") +
-  geom_point(col = starset_cols[1:17], size = 4) +  
+                   yend = n), col = "grey50", alpha = 0.9) +
+  geom_point(col = starset_cols[1:17], size = 4, alpha = 0.9) +  
   facet_wrap( ~ album, scales = "free_y", ncol = 2) +
   theme(text = element_text(size = 20, color = "#1f232e")) + 
   xlab("") + ylab("") + ggtitle("Most common words on STARSET albums", subtitle = " ") +
@@ -126,13 +126,13 @@ ggsave("plot1.png", width = 12, height = 8, units = "in", dpi = 100)
 # Sentiment analysis #
 #--------------------#
 
-# Plot nrc sentiment scores
+# Plot NRC sentiment scores
 starset_tidy %>%
   group_by(album) %>%
   inner_join(get_sentiments("nrc")) %>%
   count(word, sentiment) %>%
   ggplot(aes(sentiment, n)) +
-  geom_bar(aes(fill = sentiment), stat = "identity") +
+  geom_bar(aes(fill = sentiment), stat = "identity", alpha = 0.9) +
   scale_fill_manual(values = starset_cols[25:35]) +
   facet_wrap( ~ album, scales = "free_y", ncol = 2) +
   theme(text = element_text(size = 20, color = "#1f232e"), axis.text.x = element_text(angle = 65, vjust = 0.5)) +
@@ -146,14 +146,14 @@ ggsave("plot2.png", width = 12, height = 8, units = "in", dpi = 100)
 # Positive/negative words #
 #-------------------------#
 
-# Get bing sentiment scores
+# Get Bing sentiment scores
 starset_bing <- starset_tidy %>%
   group_by(album) %>%
   inner_join(get_sentiments("bing")) %>%
   count(word, sentiment, sort = TRUE) %>%
   ungroup()
   
-# Plot top word contributors
+# Get top word contributors
 starset_bing_top <- starset_bing %>%
   group_by(album, sentiment) %>%
   top_n(10) %>%
@@ -165,13 +165,13 @@ starset_bing_top %>%
   filter(album == "Transmissions")  %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n, fill = sentiment)) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~sentiment, scales = "free_y") +
-  scale_fill_manual(values = starset_cols[c(14, 4)]) +
-  xlab("") + ylab("") + 
-  theme(text = element_text(size = 20, color = "#1f232e")) + 
-  ggtitle("Most common positive and negative words", subtitle = "Transmissions by STARSET") +
-  ylim(0, 20) + coord_flip() + viz_theme
+    geom_col(alpha = 0.9, show.legend = FALSE) +
+    facet_wrap(~sentiment, scales = "free_y") +
+    scale_fill_manual(values = starset_cols[c(14, 4)]) +
+    xlab("") + ylab("") + 
+    theme(text = element_text(size = 20, color = "#1f232e")) + 
+    ggtitle("Most common positive and negative words", subtitle = "Transmissions by STARSET") +
+    ylim(0, 20) + coord_flip() + viz_theme
 
 ggsave("plot3.png", width = 12, height = 8, units = "in", dpi = 100)
 
@@ -180,7 +180,7 @@ starset_bing_top %>%
   filter(album == "Vessels")  %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n, fill = sentiment)) +
-    geom_col(show.legend = FALSE) +
+    geom_col(alpha = 0.9, show.legend = FALSE) +
     facet_wrap(~sentiment, scales = "free_y") +
     scale_fill_manual(values = starset_cols[c(14, 4)]) +
     xlab("") + ylab("") + 
@@ -208,10 +208,11 @@ starset_bigram_counts <- starset_bigrams %>%
 starset_bigram_counts %>%
   group_by(album) %>%
   filter(n > 10) %>%
+  top_n(10) %>%
   ungroup() %>%
   mutate(bigram = reorder(bigram, n)) %>%
   ggplot(aes(bigram, n)) +
-  geom_col(fill = starset_cols[1:27]) +
+  geom_col(fill = starset_cols[1:20], alpha = 0.9) +
   facet_wrap(~album, scales = "free_y") +
   theme(text = element_text(size = 20, color = "#1f232e")) + 
   xlab("") + ylab("") + ggtitle("Most common bigrams on STARSET albums", subtitle = " ") +
@@ -224,28 +225,30 @@ starset_bigram_counts %>%
   ungroup() %>%
   mutate(bigram = reorder(bigram, n)) %>%
   ggplot(aes(bigram, n)) +
-  geom_segment(aes(x = bigram, 
+    geom_segment(aes(x = bigram, 
                    xend = bigram, 
                    y = 0, 
-                   yend = n), col = "grey50") +
-  geom_point(col = starset_cols[1:27], size = 4) +  
-  facet_wrap(~album, scales = "free_y") +
-  theme(text = element_text(size = 20, color = "#1f232e")) + 
-  xlab("") + ylab("") + ggtitle("Most common bigrams on STARSET albums", subtitle = " ") +
-  ylim(0, 40) + coord_flip() + viz_theme
+                   yend = n), col = "grey50", alpha = 0.9) +
+    geom_point(col = starset_cols[1:27], size = 4, alpha = 0.9) +  
+    facet_wrap(~album, scales = "free_y") +
+    theme(text = element_text(size = 20, color = "#1f232e")) + 
+    xlab("") + ylab("") + ggtitle("Most common bigrams on STARSET albums", subtitle = " ") +
+    ylim(0, 40) + coord_flip() + viz_theme
 
 ggsave("plot5.png", width = 12, height = 8, units = "in", dpi = 100)
 
-# Split string and keep only relatively common combinations for each album
-starset_bigram_tm <- starset_bigram_counts %>% filter(album == "Transmissions")
-starset_bigram_tm_split <- colsplit(starset_bigram_tm$bigram," ", c("word1", "word2"))
-starset_bigram_tm <- cbind(starset_bigram_tm_split, starset_bigram_tm[, "n"])
+# Split bigrams by album and remove album column
+starset_bigrams_tm <- starset_bigram_counts %>%
+  filter(album == "Transmissions") %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+starset_bigrams_tm <- starset_bigrams_tm[, -1]
 
-starset_bigram_vs <- starset_bigram_counts %>% filter(album == "Vessels")
-starset_bigram_vs_split <- colsplit(starset_bigram_vs$bigram," ", c("word1", "word2"))
-starset_bigram_vs <- cbind(starset_bigram_vs_split, starset_bigram_vs[, "n"])
+starset_bigrams_vs <- starset_bigram_counts %>%
+  filter(album == "Vessels") %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+starset_bigrams_vs <- starset_bigrams_vs[, -1]
 
-# Convert to igraph objects for plotting
+# Convert to igraph objects for plotting and filter by frequency
 starset_bigram_tm_graph <- starset_bigram_tm %>%
   filter(n > 5) %>%
   graph_from_data_frame()
