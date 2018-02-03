@@ -14,9 +14,9 @@
 
 # Install package geniusR from GitHub
 ## Source: https://github.com/josiahparry/geniusR 
-#install.packages("devtools")
-#library(devtools)
-#devtools::install_github("josiahparry/geniusR")
+install.packages("devtools")
+library(devtools)
+devtools::install_github("josiahparry/geniusR")
 library(geniusR)
 
 # Install and load packages using pacman
