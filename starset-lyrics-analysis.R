@@ -5,6 +5,8 @@
 
 ## R version 3.4.3 (2017-11-30)
 
+## Author: Lisa Hehnke || lhehnke.github.io || @DataPlanes
+
 ## Inspired by https://www.johnmackintosh.com/2018-01-30-hardwired-for-tidy-text/?utm_content=buffereffed&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
 
 
