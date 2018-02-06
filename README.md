@@ -3,6 +3,8 @@ Script for processing, mining, and visualizing song lyrics
 
 ## Description: starset-lyrics-analysis
 
+Corresponding blog post: https://lhehnke.github.io/notes/2018/02/03/starset-song-lyrics
+
 The script covers
 
 * downloading and processing song lyrics with geniusR (https://github.com/josiahparry/geniusR)
